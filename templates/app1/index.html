@@ -1,53 +1,65 @@
-{% extends "app1/base.html" %} {% block title %} Home Page {% endblock title %}
+{% extends "app1/base.html" %} 
+
+{% block title %} Home Page {% endblock title %}
+
 {% block content %}
 <div class="container">
-  {% comment %} Form started {% endcomment %}
-  <div class="row">
-    <div class="col col-8 offset-2">
-      <h1 class="alert alert-warning text-center">
-        Employee Registration Form
-      </h1>
+    <!-- Employee Registration Form -->
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <h2 class="alert alert-primary text-center">Employee Registration</h2>
 
-      <form action=" {% url 'home' %} " method="POST">
-        {% csrf_token %} {{form.as_p}}
-        <input type="submit" value="Submit" class="btn btn-primary" />
-      </form>
+            <form action="" method="POST" class="p-4 border rounded bg-light shadow">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-primary w-100">Submit</button>
+            </form>
+        </div>
     </div>
-  </div>
-  {% comment %} Form ends {% endcomment %} {% comment %} displat sections
-  started {% endcomment %}
-  <h1 class="alert alert-dark text-center my-5">Employee Records Table</h1>
 
-  <table class="table table-hover my-5">
-    <tr class="table-dark">
-      <th scope="col">Sno</th>
-      <th scope="col">Name</th>
-      <th scope="col">Email</th>
-      <th scope="col">Password</th>
-      <th scope="col">Actions</th>
-    </tr>
-    {% for data in datas %}
-    <tr>
-      <td>{{data.id}}</td>
-      <td>{{data.name}}</td>
-      <td>{{data.email}}</td>
-      <td>{{data.password}}</td>
-      <td>
-        {% comment %} Update icon {% endcomment %}
-        <a href="{% url 'update' data.id %}">
-          <i class="fa-solid fa-pen-to-square"></i>
-        </a>
-         {% comment %} Delete icon {% endcomment %}
-        <form action="{% url 'delete' data.id %}" method="POST" class="d-inline">{% csrf_token %}
-          <button type="Submit">
-            <i class="fa-solid fa-user-xmark"></i>
-          </button>
-        </form>
-      </td>
-    </tr>
-    {% endfor %}
-  </table>
+    <!-- Employee Records Table -->
+    <h2 class="alert alert-dark text-center my-5">Employee Records</h2>
 
-  {% comment %} displat sections ends{% endcomment %}
+    <div class="table-responsive">
+        <table class="table table-hover table-bordered">
+            <thead class="table-dark text-center">
+                <tr>
+                    <th>Sno</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Password</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                {% for data in datas %}
+                <tr>
+                    <td>{{ data.id }}</td>
+                    <td>{{ data.name }}</td>
+                    <td>{{ data.email }}</td>
+                    <td>{{data.password}}</td> <!-- Masked password -->
+                    <td>
+                        <!-- Update Icon -->
+                        <a href="{% url 'update' data.id %}" class="text-warning me-3">
+                            <i class="fa-solid fa-pen-to-square"></i>
+                        </a>
+                        
+                        <!-- Delete Icon -->
+                        <form action="{% url 'delete' data.id %}" method="POST" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-link text-danger p-0 border-0">
+                                <i class="fa-solid fa-trash"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="5" class="text-center text-muted">No employees found.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock content %}

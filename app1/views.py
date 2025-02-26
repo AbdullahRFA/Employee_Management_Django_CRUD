@@ -40,3 +40,9 @@ def Delete_record(request,id):
     user = Employee.objects.get(id=id)
     user.delete()
     return redirect('/')
+
+def AboutUS(request):
+    return render(request, 'app1/about.html')
+
+def Services(request):
+    return render(request, 'app1/services.html')
