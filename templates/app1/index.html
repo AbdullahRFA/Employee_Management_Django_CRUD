@@ -1,10 +1,53 @@
-{% extends "app1/base.html" %} 
-{% block title %} Home Page {% endblock title %}
-
+{% extends "app1/base.html" %} {% block title %} Home Page {% endblock title %}
 {% block content %}
-    <h1>This is homepage</h1>
-    <form action="">
-        {{form.as_p}}
-    </form>
+<div class="container">
+  {% comment %} Form started {% endcomment %}
+  <div class="row">
+    <div class="col col-8 offset-2">
+      <h1 class="alert alert-warning text-center">
+        Employee Registration Form
+      </h1>
+
+      <form action=" {% url 'home' %} " method="POST">
+        {% csrf_token %} {{form.as_p}}
+        <input type="submit" value="Submit" class="btn btn-primary" />
+      </form>
+    </div>
+  </div>
+  {% comment %} Form ends {% endcomment %} {% comment %} displat sections
+  started {% endcomment %}
+  <h1 class="alert alert-dark text-center my-5">Employee Records Table</h1>
+
+  <table class="table table-hover my-5">
+    <tr class="table-dark">
+      <th scope="col">Sno</th>
+      <th scope="col">Name</th>
+      <th scope="col">Email</th>
+      <th scope="col">Password</th>
+      <th scope="col">Actions</th>
+    </tr>
+    {% for data in datas %}
+    <tr>
+      <td>{{data.id}}</td>
+      <td>{{data.name}}</td>
+      <td>{{data.email}}</td>
+      <td>{{data.password}}</td>
+      <td>
+        {% comment %} Update icon {% endcomment %}
+        <a href="{% url 'update' data.id %}">
+          <i class="fa-solid fa-pen-to-square"></i>
+        </a>
+         {% comment %} Delete icon {% endcomment %}
+        <form action="{% url 'delete' data.id %}" method="POST" class="d-inline">{% csrf_token %}
+          <button type="Submit">
+            <i class="fa-solid fa-user-xmark"></i>
+          </button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+
+  {% comment %} displat sections ends{% endcomment %}
+</div>
 {% endblock content %}
-    
